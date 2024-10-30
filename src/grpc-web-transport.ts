@@ -22,8 +22,8 @@ import {
     readGrpcWebResponseTrailer
 } from "./grpc-web-format";
 
-import {GrpcStatusCode} from "./goog-grpc-status-code";
-import {GrpcWebOptions} from "./grpc-web-options";
+import { GrpcStatusCode } from "./goog-grpc-status-code";
+import { GrpcWebOptions } from "./grpc-web-options";
 
 /**
  * Implements the grpc-web protocol, supporting text format or binary
@@ -73,14 +73,14 @@ export class GrpcWebFetchTransport implements RpcTransport {
     clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): ClientStreamingCall<I, O> {
         const e = new RpcError('Client streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
         e.methodName = method.name;
-        e.serviceName  = method.service.typeName;
+        e.serviceName = method.service.typeName;
         throw e;
     }
 
     duplex<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): DuplexStreamingCall<I, O> {
         const e = new RpcError('Duplex streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
         e.methodName = method.name;
-        e.serviceName  = method.service.typeName;
+        e.serviceName = method.service.typeName;
         throw e;
     }
 
@@ -171,7 +171,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                     // RpcErrors are thrown by us, everything else is an internal error
                     error = new RpcError(reason instanceof Error ? reason.message : "" + reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
                 error.methodName = method.name;
-                error.serviceName  = method.service.typeName;
+                error.serviceName = method.service.typeName;
                 defHeader.rejectPending(error);
                 responseStream.notifyError(error)
                 defStatus.rejectPending(error);
@@ -265,8 +265,8 @@ export class GrpcWebFetchTransport implements RpcTransport {
                     throw new RpcError(maybeStatus.detail, maybeStatus.code, maybeTrailer);
 
                 defMessage.resolve(maybeMessage);
-                if (maybeStatus.code !== 'OK')
-                    throw new RpcError(maybeStatus.detail, maybeStatus.code, maybeTrailer);
+                // if (maybeStatus.code !== 'OK')
+                //     throw new RpcError(maybeStatus.detail, maybeStatus.code, maybeTrailer);
 
                 defStatus.resolve(maybeStatus);
                 defTrailer.resolve(maybeTrailer || {});
@@ -284,7 +284,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                     // RpcErrors are thrown by us, everything else is an internal error
                     error = new RpcError(reason instanceof Error ? reason.message : "" + reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
                 error.methodName = method.name;
-                error.serviceName  = method.service.typeName;
+                error.serviceName = method.service.typeName;
                 defHeader.rejectPending(error);
                 defMessage.rejectPending(error);
                 defStatus.rejectPending(error);

@@ -1,6 +1,6 @@
-import { base64decode, base64encode } from "@protobuf-ts/runtime";
-import { RpcError, RpcMetadata } from "@protobuf-ts/runtime-rpc";
-import { GrpcStatusCode } from "./goog-grpc-status-code";
+import {base64decode, base64encode} from "@protobuf-ts/runtime";
+import {RpcError, RpcMetadata} from "@protobuf-ts/runtime-rpc";
+import {GrpcStatusCode} from "./goog-grpc-status-code";
 
 
 /**
@@ -92,7 +92,7 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
         // * https://developers.cloudflare.com/workers/runtime-apis/response/#properties
         // * https://github.com/cloudflare/miniflare/blob/72f046e/packages/core/src/standards/http.ts#L646
         let responseType
-        try { responseType = fetchResponse.type } catch { }
+        try { responseType = fetchResponse.type } catch {}
         switch (responseType) {
             case "error":
             case "opaque":
@@ -316,8 +316,8 @@ function parseStatus(headers: HttpHeaders): [GrpcStatusCode | undefined, string 
         message: string | undefined;
     let m = headers['grpc-message'];
     if (m !== undefined) {
-        // if (Array.isArray(m))
-        //     return [GrpcStatusCode.INTERNAL, "invalid grpc-web message"];
+        if (Array.isArray(m))
+            return [GrpcStatusCode.INTERNAL, "invalid grpc-web message"];
         message = m;
     }
     let s = headers['grpc-status'];
